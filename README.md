@@ -1,3 +1,3 @@
 # pkgjs/action
 
-A composite action to test Node.js packages.
+Github Actions tooling for testing Node.js packages.
