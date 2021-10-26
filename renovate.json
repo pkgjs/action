@@ -2,6 +2,10 @@
   "extends": [
     "config:base",
     ":preserveSemverRanges",
-    ":maintainLockFilesWeekly"
-  ]
+    ":maintainLockFilesWeekly",
+    ":disableDependencyDashboard"
+  ],
+  "node": {
+    "enabled": false
+  }
 }
