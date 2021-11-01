@@ -14,12 +14,26 @@ exports.getOutput = function (now, pkg) {
 
     const output = [];
 
-    PrepareNodeTextMatrixAction.main({
-        now,
-        pkg,
-        debug: () => {},
-        setOutput: (line) => output.push(line)
-    });
+    // hijack process.stdout.write, which is used by @actions/core
+    const originalWrite = process.stdout.write;
+    process.stdout.write = function (line) {
+
+        line = line.trim();
+        if (line) {
+            output.push(line);
+        }
+    };
+
+    try {
+        PrepareNodeTextMatrixAction.main({
+            now,
+            pkg,
+            debug: () => {}
+        });
+    }
+    finally {
+        process.stdout.write = originalWrite;
+    }
 
     return output;
 };
