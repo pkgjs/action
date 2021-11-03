@@ -4,8 +4,8 @@
   "version": "0.0.0-development",
   "description": "Github Actions tooling for testing Node.js packages",
   "scripts": {
-    "lint": "[ \"$NODE_LTS_LATEST\" != \"\" ] && [ \"$MATRIX_NODE_VERSION\" != \"$NODE_LTS_LATEST\" ] && echo 'Skipping linting' || npx -- eslint .",
-    "test": "for PRIVATE_ACTION in private-actions/*/; do cd ${INIT_CWD}/${PRIVATE_ACTION} && npm test; done && cd ${INIT_CWD} && npm run lint"
+    "lint": "[ \"$NODE_LTS_LATEST\" != \"\" ] && [ \"$MATRIX_NODE_VERSION\" != \"$NODE_LTS_LATEST\" ] && echo 'Skipping linting' || npx -- eslint .github",
+    "test": "for PRIVATE_ACTION in .github/actions/*/; do cd ${INIT_CWD}/${PRIVATE_ACTION} && npm test; done && cd ${INIT_CWD} && npm run lint"
   },
   "repository": {
     "type": "git",

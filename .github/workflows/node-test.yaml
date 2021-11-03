@@ -18,7 +18,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - uses: pkgjs/action/private-actions/prepare-node-test-matrix-action@main
+    - uses: pkgjs/action/.github/actions/prepare-node-test-matrix-action@main
       id: set-matrix
       with:
         upgrade-policy: ${{ inputs.upgrade-policy }}
