@@ -31,10 +31,10 @@ jobs:
   test:
     uses: pkgjs/action/.github/workflows/node-test.yaml@main
     with:
-      upgradePolicy: lts           # optional
+      upgrade-policy: lts           # optional
 ```
 
-With the above configuration, a test matrix will be created which will included all versions that match `upgradePolicy` starting with the minimum major version defined in the `engines.node` field. In October, 2021, the above example would yield the following versions: 16, 14, 12, 10 (see below for more examples).
+With the above configuration, a test matrix will be created which will included all versions that match `upgrade-policy` starting with the minimum major version defined in the `engines.node` field. In October, 2021, the above example would yield the following versions: 16, 14, 12, 10 (see below for more examples).
 
 The test script will check out your repository, execute `npm install` and then execute an `npm test` using the latest Node.js version in every release line in the test matrix. 
 

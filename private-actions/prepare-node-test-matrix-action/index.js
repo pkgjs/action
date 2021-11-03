@@ -27,7 +27,7 @@ exports.main = function ({ now = new Date(), pkg = Package, debug = console.info
     const minVersion = Semver.minVersion(pkg.engines.node);
     debug(`Minimum major in the supported range: ${minVersion.major}`);
 
-    const upgradePolicy = ActionsCore.getInput('upgradePolicy') || 'lts';
+    const upgradePolicy = ActionsCore.getInput('upgrade-policy') || 'lts';
     if (upgradePolicy !== 'lts' && upgradePolicy !== 'lts/strict' && upgradePolicy !== 'all') {
         throw new Error(`No such upgrade policy: ${upgradePolicy}`);
     }
@@ -82,7 +82,7 @@ exports.main = function ({ now = new Date(), pkg = Package, debug = console.info
 
     const sorted = versions.sort((a, b) => b - a);
     ActionsCore.setOutput('matrix', JSON.stringify(sorted));
-    ActionsCore.setOutput('lts_latest', ltsLatest);
+    ActionsCore.setOutput('lts-latest', ltsLatest);
 };
 
 
