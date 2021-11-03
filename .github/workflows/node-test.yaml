@@ -1,9 +1,25 @@
 on:
   workflow_call:
     inputs:
+
       upgrade-policy:
         description: "Node.js version upgrade policy. Allowed values: `lts` (default), `lts/strict`, `all`."
         default: lts
+        required: false
+        type: string
+
+      post-checkout-steps:
+        description: "Steps to execute after checkout (i.e. before installing dependencies)"
+        required: false
+        type: string
+
+      post-install-steps:
+        description: "Steps to execute after installing dependencies (i.e. before running tests)"
+        required: false
+        type: string
+
+      post-test-steps:
+        description: "Steps to execute after the tests complete"
         required: false
         type: string
 
@@ -17,8 +33,12 @@ jobs:
       lts-latest: ${{ steps.set-matrix.outputs.lts-latest }}
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: pkgjs/action/.github/actions/prepare-node-test-matrix-action@main
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Prepare the matrix
+      uses: pkgjs/action/.github/actions/prepare-node-test-matrix-action@main
       id: set-matrix
       with:
         upgrade-policy: ${{ inputs.upgrade-policy }}
@@ -33,18 +53,57 @@ jobs:
 
     steps:
 
-    - uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2
 
-    - uses: actions/setup-node@v2
+    - name: Prepare post-checkout steps
+      if: ${{ inputs.post-checkout-steps }}
+      uses: pkgjs/action/.github/actions/prepare-dynamic-steps@main
+      with:
+        steps: ${{ inputs.post-checkout-steps }}
+        path: post-checkout-steps
+
+    - name: Prepare post-install steps
+      if: ${{ inputs.post-install-steps }}
+      uses: pkgjs/action/.github/actions/prepare-dynamic-steps@main
+      with:
+        steps: ${{ inputs.post-install-steps }}
+        path: post-install-steps
+
+    - name: Prepare post-test steps
+      if: ${{ inputs.post-test-steps }}
+      uses: pkgjs/action/.github/actions/prepare-dynamic-steps@main
+      with:
+        steps: ${{ inputs.post-test-steps }}
+        path: post-test-steps
+
+    - name: Setup Node.js@${{ matrix.node-version }}
+      uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
 
-    - run: npm install
+    - name: Run post-checkout steps
+      if: ${{ inputs.post-checkout-steps }}
+      uses: ./.github/tmp/post-checkout-steps
+
+
+    - name: Install dependencies
+      run: npm install
       env:
         MATRIX_NODE_VERSION: ${{ matrix.node-version }}
         NODE_LTS_LATEST: ${{ needs.prepare-node-matrix.outputs.lts-latest }}
 
-    - run: npm test
+    - name: Run post-install steps
+      if: ${{ inputs.post-install-steps }}
+      uses: ./.github/tmp/post-install-steps
+
+
+    - name: Run tests
+      run: npm test
       env:
         MATRIX_NODE_VERSION: ${{ matrix.node-version }}
         NODE_LTS_LATEST: ${{ needs.prepare-node-matrix.outputs.lts-latest }}
+
+    - name: Run post-test steps
+      if: ${{ inputs.post-test-steps }}
+      uses: ./.github/tmp/post-test-steps
