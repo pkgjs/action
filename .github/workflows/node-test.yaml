@@ -23,6 +23,12 @@ on:
         required: false
         type: string
 
+      test-command:
+        description: "Command to run instead of `npm test` (e.g. for coverage)."
+        default: npm test
+        required: false
+        type: string
+
 jobs:
 
   prepare-node-matrix:
@@ -99,7 +105,7 @@ jobs:
 
 
     - name: Run tests
-      run: npm test
+      run: ${{ inputs.test-command }}
       env:
         MATRIX_NODE_VERSION: ${{ matrix.node-version }}
         NODE_LTS_LATEST: ${{ needs.prepare-node-matrix.outputs.lts-latest }}
