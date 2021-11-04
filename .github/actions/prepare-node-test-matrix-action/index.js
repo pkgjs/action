@@ -16,6 +16,16 @@ const Semver = require('semver');
 const Package = require(Path.join(process.cwd(), 'package.json'));
 
 
+const internals = {};
+
+
+internals.setOutput = function (name, value, { debug }) {
+
+    debug('Output', { name, value });
+    ActionsCore.setOutput(name, value);
+};
+
+
 exports.main = function ({ now = new Date(), pkg = Package, debug = console.info } = {}) {
 
     if (!pkg.engines || !pkg.engines.node) {
@@ -81,8 +91,12 @@ exports.main = function ({ now = new Date(), pkg = Package, debug = console.info
     }
 
     const sorted = versions.sort((a, b) => b - a);
-    ActionsCore.setOutput('matrix', JSON.stringify(sorted));
-    ActionsCore.setOutput('lts-latest', ltsLatest);
+    internals.setOutput('matrix', JSON.stringify(sorted), { debug });
+    internals.setOutput('lts-latest', ltsLatest, { debug });
+
+    const runsOnInput = ActionsCore.getInput('runs-on') || 'ubuntu-latest';
+    const runsOn = runsOnInput.split(/[,\s]+/);
+    internals.setOutput('runs-on', JSON.stringify(runsOn), { debug });
 };
 
 
