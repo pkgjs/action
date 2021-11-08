@@ -1,0 +1,23 @@
+{
+  "name": "@pkgjs/prepare-dynamic-steps",
+  "private": true,
+  "version": "0.0.0-development",
+  "description": "Github Actions tooling for testing Node.js packages",
+  "scripts": {
+    "test": "node test/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pkgjs/action.git"
+  },
+  "author": "@pkgjs",
+  "license": "MIT",
+  "engines": {
+    "node": "^12",
+    "npm": "^8"
+  },
+  "dependencies": {
+    "@actions/core": "^1.6.0",
+    "yaml": "^1.10.2"
+  }
+}
