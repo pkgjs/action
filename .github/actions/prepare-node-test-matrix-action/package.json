@@ -13,9 +13,11 @@
   "author": "@pkgjs",
   "license": "MIT",
   "engines": {
-    "node": "^12"
+    "node": "^12",
+    "npm": "^8"
   },
   "dependencies": {
+    "@actions/core": "^1.6.0",
     "semver": "^7.3.5"
   }
 }

@@ -5,7 +5,10 @@
     ":maintainLockFilesWeekly",
     ":disableDependencyDashboard"
   ],
-  "node": {
-    "enabled": false
-  }
+  "packageRules": [
+    {
+      "packageNames": ["node"],
+      "enabled": false
+    }
+  ]
 }

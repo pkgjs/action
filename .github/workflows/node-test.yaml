@@ -1,7 +1,7 @@
 on:
   workflow_call:
     inputs:
-      upgradePolicy:
+      upgrade-policy:
         description: "Node.js version upgrade policy. Allowed values: `lts` (default), `lts/strict`, `all`."
         default: lts
         required: false
@@ -14,14 +14,14 @@ jobs:
 
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
-      lts_latest: ${{ steps.set-matrix.outputs.lts_latest }}
+      lts-latest: ${{ steps.set-matrix.outputs.lts-latest }}
 
     steps:
     - uses: actions/checkout@v2
-    - uses: pkgjs/action/private-actions/prepare-node-test-matrix-action@main
+    - uses: pkgjs/action/.github/actions/prepare-node-test-matrix-action@main
       id: set-matrix
       with:
-        upgradePolicy: ${{ inputs.upgradePolicy }}
+        upgrade-policy: ${{ inputs.upgrade-policy }}
 
   test:
     runs-on: ubuntu-latest
@@ -42,9 +42,9 @@ jobs:
     - run: npm install
       env:
         MATRIX_NODE_VERSION: ${{ matrix.node-version }}
-        NODE_LTS_LATEST: ${{ needs.prepare-node-matrix.outputs.lts_latest }}
+        NODE_LTS_LATEST: ${{ needs.prepare-node-matrix.outputs.lts-latest }}
 
     - run: npm test
       env:
         MATRIX_NODE_VERSION: ${{ matrix.node-version }}
-        NODE_LTS_LATEST: ${{ needs.prepare-node-matrix.outputs.lts_latest }}
+        NODE_LTS_LATEST: ${{ needs.prepare-node-matrix.outputs.lts-latest }}

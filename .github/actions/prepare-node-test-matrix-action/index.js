@@ -6,6 +6,7 @@ process.on('unhandledRejection', (err) => {
 });
 
 
+const ActionsCore = require('@actions/core');
 const Path = require('path');
 const Schedule = require('./schedule.json'); // https://raw.githubusercontent.com/nodejs/Release/master/schedule.json
 const Semver = require('semver');
@@ -15,7 +16,7 @@ const Semver = require('semver');
 const Package = require(Path.join(process.cwd(), 'package.json'));
 
 
-exports.main = function ({ now = new Date(), pkg = Package, debug = console.info, setOutput = console.log } = {}) {
+exports.main = function ({ now = new Date(), pkg = Package, debug = console.info } = {}) {
 
     if (!pkg.engines || !pkg.engines.node) {
         throw new Error('`engines.node` range not defined in `package.json`.');
@@ -26,7 +27,7 @@ exports.main = function ({ now = new Date(), pkg = Package, debug = console.info
     const minVersion = Semver.minVersion(pkg.engines.node);
     debug(`Minimum major in the supported range: ${minVersion.major}`);
 
-    const upgradePolicy = process.env.INPUT_UPGRADEPOLICY || 'lts';
+    const upgradePolicy = ActionsCore.getInput('upgrade-policy') || 'lts';
     if (upgradePolicy !== 'lts' && upgradePolicy !== 'lts/strict' && upgradePolicy !== 'all') {
         throw new Error(`No such upgrade policy: ${upgradePolicy}`);
     }
@@ -80,8 +81,8 @@ exports.main = function ({ now = new Date(), pkg = Package, debug = console.info
     }
 
     const sorted = versions.sort((a, b) => b - a);
-    setOutput(`::set-output name=matrix::${JSON.stringify(sorted)}`);
-    setOutput(`::set-output name=lts_latest::${ltsLatest}`);
+    ActionsCore.setOutput('matrix', JSON.stringify(sorted));
+    ActionsCore.setOutput('lts-latest', ltsLatest);
 };
 
 
