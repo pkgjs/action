@@ -11,9 +11,15 @@ inputs:
     description: "Node.js version upgrade policy. Allowed values: `lts` (default), `lts/strict`, `all`."
     default: lts
     required: false
+  runs-on:
+    description: "Comma separated list of runner labels (note: not YAML!), see https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#jobsjob_idruns-on."
+    default: "ubuntu-latest"
+    required: false
 
 outputs:
   matrix:
     description: "A JSON with a list of Node.js versions matching the upgrade policy, where the minimum version is the one defined in the `package.json` `engines.node` field."
   lts-latest:
     description: "Which version of node is the latest active LTS."
+  runs-on:
+    description: "A JSON with a list of OS versions for use in `jobs.<job_id>.runs-on`"

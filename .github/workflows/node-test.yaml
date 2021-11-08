@@ -7,6 +7,11 @@ on:
         default: lts
         required: false
         type: string
+      runs-on:
+        description: "Comma separated list of runner labels (note: not YAML!), see https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#jobsjob_idruns-on."
+        default: "ubuntu-latest"
+        required: false
+        type: string
 
       post-checkout-steps:
         description: "Steps to execute after checkout (i.e. before installing dependencies)"
@@ -36,6 +41,7 @@ jobs:
 
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
+      runs-on: ${{ steps.set-matrix.outputs.runs-on }}
       lts-latest: ${{ steps.set-matrix.outputs.lts-latest }}
 
     steps:
@@ -48,14 +54,17 @@ jobs:
       id: set-matrix
       with:
         upgrade-policy: ${{ inputs.upgrade-policy }}
+        runs-on: ${{ inputs.runs-on }}
 
   test:
-    runs-on: ubuntu-latest
     needs: prepare-node-matrix
 
     strategy:
       matrix:
         node-version: ${{ fromJson(needs.prepare-node-matrix.outputs.matrix) }}
+        runs-on: ${{ fromJson(needs.prepare-node-matrix.outputs.runs-on) }}
+
+    runs-on: ${{ matrix.runs-on }}
 
     steps:
 
