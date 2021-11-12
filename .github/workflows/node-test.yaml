@@ -82,8 +82,10 @@ jobs:
         runs-on: ${{ fromJson(needs.prepare-node-matrix.outputs.runs-on) }}
         include: ${{ fromJson(needs.prepare-node-matrix.outputs.include) }}
         exclude: ${{ fromJson(needs.prepare-node-matrix.outputs.exclude) }}
+        experimental: [false]
 
     runs-on: ${{ matrix.runs-on }}
+    continue-on-error: ${{ matrix.experimental }}
 
     steps:
 
