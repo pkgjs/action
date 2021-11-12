@@ -43,10 +43,13 @@ exports.main = function ({ now = new Date(), pkg = Package, debug = console.info
         throw new Error(`No such upgrade policy: ${upgradePolicy}`);
     }
 
+    const today = now.toISOString().substr(0, 10);
+
     const include = Yaml.parse(ActionsCore.getInput('include') || '[]');
     const exclude = Yaml.parse(ActionsCore.getInput('exclude') || '[]');
 
-    const today = now.toISOString().substr(0, 10);
+    const runsOnInput = ActionsCore.getInput('runs-on') || 'ubuntu-latest';
+    const runsOn = runsOnInput.split(/[,\s]+/);
 
     const versions = [];
     let ltsLatest = 4; // oldest LTS - avoid returning undefined here
@@ -81,6 +84,19 @@ exports.main = function ({ now = new Date(), pkg = Package, debug = console.info
                 debug(`${version} - skipping: not LTS.`);
                 continue;
             }
+
+            if (!isLtsStarted) {
+                debug(`${version} - experimental: not yet LTS.`);
+                include.unshift(...runsOn.map((os) => {
+
+                    return {
+                        'runs-on': os,
+                        'node-version': versionNumber,
+                        experimental: true
+                    };
+                }));
+                continue;
+            }
         }
 
         if (upgradePolicy === 'lts/strict') {
@@ -98,8 +114,6 @@ exports.main = function ({ now = new Date(), pkg = Package, debug = console.info
     internals.setOutput('node-version', JSON.stringify(sorted), { debug });
     internals.setOutput('lts-latest', ltsLatest, { debug });
 
-    const runsOnInput = ActionsCore.getInput('runs-on') || 'ubuntu-latest';
-    const runsOn = runsOnInput.split(/[,\s]+/);
     internals.setOutput('runs-on', JSON.stringify(runsOn), { debug });
 
     internals.setOutput('include', JSON.stringify(include), { debug });
