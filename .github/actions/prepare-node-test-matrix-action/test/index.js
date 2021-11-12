@@ -212,6 +212,16 @@ exports.main = function () {
         '::set-output name=include::[{"runs-on":"ubuntu-latest","node-version":14,"experimental":true},{"runs-on":"windows-latest","node-version":14,"experimental":true},{"runs-on":"macos-latest","node-version":14,"experimental":true}]',
         '::set-output name=exclude::[]'
     ]);
+
+    // runs-on - YAML
+    process.env = { ...originalEnv, 'INPUT_RUNS-ON': '- ubuntu-latest\n- windows-latest\n- macos-latest\n' };
+    Assert.deepStrictEqual(exports.getOutput(new Date('2020-07-01'), { engines: { node: '^14' } }), [
+        '::set-output name=node-version::[]',
+        '::set-output name=lts-latest::12',
+        '::set-output name=runs-on::["ubuntu-latest","windows-latest","macos-latest"]',
+        '::set-output name=include::[{"runs-on":"ubuntu-latest","node-version":14,"experimental":true},{"runs-on":"windows-latest","node-version":14,"experimental":true},{"runs-on":"macos-latest","node-version":14,"experimental":true}]',
+        '::set-output name=exclude::[]'
+    ]);
 };
 
 
