@@ -7,19 +7,40 @@ runs:
   main: index.js
 
 inputs:
+
   upgrade-policy:
     description: "Node.js version upgrade policy. Allowed values: `lts` (default), `lts/strict`, `all`."
     default: lts
     required: false
+
   runs-on:
     description: "Comma separated list of runner labels (note: not YAML!), see https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#jobsjob_idruns-on."
     default: "ubuntu-latest"
     required: false
 
+  include:
+    description: "A string with additional matrix combinations as YAML array of objects with the following keys: node-version, runs-on, experimental"
+    default: "[]"
+    required: false
+
+  exclude:
+    description: "A string with matrix combinations to be skipped as a YAML array of objects with the following keys: node-version, runs-on"
+    default: "[]"
+    required: false
+
 outputs:
+
   node-version:
     description: "A JSON with a list of Node.js versions matching the upgrade policy, where the minimum version is the one defined in the `package.json` `engines.node` field."
+
   lts-latest:
     description: "Which version of node is the latest active LTS."
+
   runs-on:
-    description: "A JSON with a list of OS versions for use in `jobs.<job_id>.runs-on`"
+    description: "A JSON with a list of OS versions for use in `jobs.<job_id>.runs-on`."
+
+  include:
+    description: "A JSON with additional matrix combinations."
+
+  exclude:
+    description: "A JSON with matrix combinations that should be skipped."

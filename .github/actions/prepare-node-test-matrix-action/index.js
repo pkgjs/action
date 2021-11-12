@@ -10,6 +10,7 @@ const ActionsCore = require('@actions/core');
 const Path = require('path');
 const Schedule = require('./schedule.json'); // https://raw.githubusercontent.com/nodejs/Release/master/schedule.json
 const Semver = require('semver');
+const Yaml = require('yaml');
 
 
 // package.json from the system being tested
@@ -41,6 +42,9 @@ exports.main = function ({ now = new Date(), pkg = Package, debug = console.info
     if (upgradePolicy !== 'lts' && upgradePolicy !== 'lts/strict' && upgradePolicy !== 'all') {
         throw new Error(`No such upgrade policy: ${upgradePolicy}`);
     }
+
+    const include = Yaml.parse(ActionsCore.getInput('include') || '[]');
+    const exclude = Yaml.parse(ActionsCore.getInput('exclude') || '[]');
 
     const today = now.toISOString().substr(0, 10);
 
@@ -97,6 +101,9 @@ exports.main = function ({ now = new Date(), pkg = Package, debug = console.info
     const runsOnInput = ActionsCore.getInput('runs-on') || 'ubuntu-latest';
     const runsOn = runsOnInput.split(/[,\s]+/);
     internals.setOutput('runs-on', JSON.stringify(runsOn), { debug });
+
+    internals.setOutput('include', JSON.stringify(include), { debug });
+    internals.setOutput('exclude', JSON.stringify(exclude), { debug });
 };
 
 
