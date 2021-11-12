@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      node-version: ${{ steps.set-matrix.outputs.node-version }}
       runs-on: ${{ steps.set-matrix.outputs.runs-on }}
       lts-latest: ${{ steps.set-matrix.outputs.lts-latest }}
 
@@ -61,7 +61,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: ${{ fromJson(needs.prepare-node-matrix.outputs.matrix) }}
+        node-version: ${{ fromJson(needs.prepare-node-matrix.outputs.node-version) }}
         runs-on: ${{ fromJson(needs.prepare-node-matrix.outputs.runs-on) }}
 
     runs-on: ${{ matrix.runs-on }}

@@ -17,7 +17,7 @@ inputs:
     required: false
 
 outputs:
-  matrix:
+  node-version:
     description: "A JSON with a list of Node.js versions matching the upgrade policy, where the minimum version is the one defined in the `package.json` `engines.node` field."
   lts-latest:
     description: "Which version of node is the latest active LTS."

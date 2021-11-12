@@ -91,7 +91,7 @@ exports.main = function ({ now = new Date(), pkg = Package, debug = console.info
     }
 
     const sorted = versions.sort((a, b) => b - a);
-    internals.setOutput('matrix', JSON.stringify(sorted), { debug });
+    internals.setOutput('node-version', JSON.stringify(sorted), { debug });
     internals.setOutput('lts-latest', ltsLatest, { debug });
 
     const runsOnInput = ActionsCore.getInput('runs-on') || 'ubuntu-latest';
