@@ -45,11 +45,36 @@ exports.main = function ({ now = new Date(), pkg = Package, debug = console.info
 
     const today = now.toISOString().substr(0, 10);
 
-    const include = Yaml.parse(ActionsCore.getInput('include') || '[]');
-    const exclude = Yaml.parse(ActionsCore.getInput('exclude') || '[]');
-
     const runsOnInput = Yaml.parse(ActionsCore.getInput('runs-on') || 'ubuntu-latest');
     const runsOn = Array.isArray(runsOnInput) ? runsOnInput : runsOnInput.split(/[,\s]+/);
+
+    const includeInput = Yaml.parse(ActionsCore.getInput('include') || '[]');
+    const include = [];
+
+    includeInput.forEach((matrixCombo) => {
+
+        const experimental = matrixCombo.experimental === undefined ? false : matrixCombo.experimental;
+
+        if (matrixCombo['runs-on'] !== undefined) {
+            include.push({
+                'runs-on': matrixCombo['runs-on'],
+                'node-version': matrixCombo['node-version'],
+                experimental
+            });
+        }
+        else {
+            runsOn.forEach((os) => {
+
+                include.push({
+                    'runs-on': os,
+                    'node-version': matrixCombo['node-version'],
+                    experimental
+                });
+            });
+        }
+    });
+
+    const exclude = Yaml.parse(ActionsCore.getInput('exclude') || '[]');
 
     const versions = [];
     let ltsLatest = 4; // oldest LTS - avoid returning undefined here
