@@ -28,6 +28,18 @@ on:
         required: false
         type: string
 
+      strategy-fail-fast:
+        description: "Set to true to cancel the workflow as soon as the first matrix combo fails. Note: default here is different than the Github Actions default."
+        default: false
+        required: false
+        type: boolean
+
+      strategy-max-parallel:
+        description: "The maximum number of matrix jobs that can run simultaneously."
+        default: 0
+        required: false
+        type: number
+
       test-command:
         description: "Command to run instead of `npm test` (e.g. for coverage)."
         default: npm test
@@ -60,6 +72,8 @@ jobs:
     needs: prepare-node-matrix
 
     strategy:
+      fail-fast: ${{ inputs.strategy-fail-fast }}
+      max-parallel: ${{ inputs.strategy-max-parallel }}
       matrix:
         node-version: ${{ fromJson(needs.prepare-node-matrix.outputs.matrix) }}
         runs-on: ${{ fromJson(needs.prepare-node-matrix.outputs.runs-on) }}
