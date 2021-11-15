@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@actions/core": "^1.6.0",
-    "semver": "^7.3.5"
+    "semver": "^7.3.5",
+    "yaml": "^1.10.2"
   }
 }
