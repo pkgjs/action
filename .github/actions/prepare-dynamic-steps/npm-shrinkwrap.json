@@ -1,7 +1,7 @@
 {
   "name": "@pkgjs/prepare-dynamic-steps",
   "version": "0.0.0-development",
-  "lockfileVersion": 2,
+  "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
@@ -13,7 +13,7 @@
         "yaml": "^1.10.2"
       },
       "engines": {
-        "node": "^12",
+        "node": "^16",
         "npm": "^8"
       }
     },
@@ -48,34 +48,6 @@
       "engines": {
         "node": ">= 6"
       }
-    }
-  },
-  "dependencies": {
-    "@actions/core": {
-      "version": "1.6.0",
-      "resolved": "https://registry.npmjs.org/@actions/core/-/core-1.6.0.tgz",
-      "integrity": "sha512-NB1UAZomZlCV/LmJqkLhNTqtKfFXJZAUPcfl/zqG7EfsQdeUJtaWO98SGbuQ3pydJ3fHl2CvI/51OKYlCYYcaw==",
-      "requires": {
-        "@actions/http-client": "^1.0.11"
-      }
-    },
-    "@actions/http-client": {
-      "version": "1.0.11",
-      "resolved": "https://registry.npmjs.org/@actions/http-client/-/http-client-1.0.11.tgz",
-      "integrity": "sha512-VRYHGQV1rqnROJqdMvGUbY/Kn8vriQe/F9HR2AlYHzmKuM/p3kjNuXhmdBfcVgsvRWTz5C5XW5xvndZrVBuAYg==",
-      "requires": {
-        "tunnel": "0.0.6"
-      }
-    },
-    "tunnel": {
-      "version": "0.0.6",
-      "resolved": "https://registry.npmjs.org/tunnel/-/tunnel-0.0.6.tgz",
-      "integrity": "sha512-1h/Lnq9yajKY2PEbBadPXj3VxsDDu844OnaAo52UVmIzIvwwtBPIuNvkjuzBlTWpfJyUbG3ez0KSBibQkj4ojg=="
-    },
-    "yaml": {
-      "version": "1.10.2",
-      "resolved": "https://registry.npmjs.org/yaml/-/yaml-1.10.2.tgz",
-      "integrity": "sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg=="
     }
   }
 }
