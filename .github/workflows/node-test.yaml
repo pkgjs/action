@@ -116,8 +116,19 @@ jobs:
       uses: ./.github/tmp/post-checkout-steps
 
 
+    - name: Prepare install script
+      id: prepare-install-script
+      shell: bash
+      run: |
+        if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ]
+        then
+          echo "::set-output name=install-command::npm ci"
+        else
+          echo "::set-output name=install-command::npm install"
+        fi
+
     - name: Install dependencies
-      run: npm install
+      run: ${{ steps.prepare-install-script.outputs.install-command }}
       env:
         MATRIX_NODE_VERSION: ${{ matrix.node-version }}
         NODE_LTS_LATEST: ${{ needs.prepare-node-matrix.outputs.lts-latest }}
