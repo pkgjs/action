@@ -120,7 +120,7 @@ jobs:
       id: prepare-install-script
       shell: bash
       run: |
-        if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ]
+        if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ] || [ -f yarn.lock ]
         then
           echo "::set-output name=install-command::npm ci"
         else
