@@ -46,6 +46,11 @@ on:
         required: false
         type: string
 
+    secrets:
+      test-secrets:
+        description: "A JSON object with the secret environment variables to be set for the 'Run tests' step. Values will be masked in output."
+        required: false
+
 jobs:
 
   prepare-node-matrix:
@@ -127,11 +132,31 @@ jobs:
       uses: ./.github/tmp/post-install-steps
 
 
+    - name: Set environment variables for tests
+      id: set-env-vars-for-tests
+      shell: bash
+      run: |
+        # mask all values in the input vars
+        echo ${INPUT_VARS} | jq -c -r '.[] | "::add-mask::" + .'
+
+        # set the matrix variables into env for tests
+        MERGED_VARS=$(cat <<EOF | jq -c -s '.[0] * .[1]'
+          ${INPUT_VARS}
+          {
+            "MATRIX_NODE_VERSION":"${{ matrix.node-version }}",
+            "NODE_LTS_LATEST":"${{ needs.prepare-node-matrix.outputs.lts-latest }}"
+          }
+        EOF
+        )
+
+        # output the merged variables
+        echo "::set-output name=env-vars::${MERGED_VARS}"
+      env:
+        INPUT_VARS: ${{ secrets.test-secrets || '{}' }}
+
     - name: Run tests
       run: ${{ inputs.test-command }}
-      env:
-        MATRIX_NODE_VERSION: ${{ matrix.node-version }}
-        NODE_LTS_LATEST: ${{ needs.prepare-node-matrix.outputs.lts-latest }}
+      env: ${{ fromJson(steps.set-env-vars-for-tests.outputs.env-vars) }}
 
     - name: Run post-test steps
       if: ${{ inputs.post-test-steps }}
