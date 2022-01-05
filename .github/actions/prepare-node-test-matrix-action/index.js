@@ -27,6 +27,18 @@ internals.setOutput = function (name, value, { debug }) {
 };
 
 
+internals.isExcluded = function (combo, exclude) {
+
+    return exclude.some((excludedCombo) => {
+
+        return Object.entries(excludedCombo).every(([k, v]) => {
+
+            return combo[k] === v;
+        });
+    });
+};
+
+
 exports.main = function ({ now = new Date(), pkg = Package, debug = console.info } = {}) {
 
     if (!pkg.engines || !pkg.engines.node) {
@@ -112,14 +124,17 @@ exports.main = function ({ now = new Date(), pkg = Package, debug = console.info
 
             if (!isLtsStarted) {
                 debug(`${version} - experimental: not yet LTS.`);
-                include.unshift(...runsOn.map((os) => {
+                include.unshift(...runsOn
+                    .map((os) => {
 
-                    return {
-                        'runs-on': os,
-                        'node-version': versionNumber,
-                        experimental: true
-                    };
-                }));
+                        return {
+                            'runs-on': os,
+                            'node-version': versionNumber,
+                            experimental: true
+                        };
+                    })
+                    .filter((combo) => !internals.isExcluded(combo, exclude))
+                );
                 continue;
             }
         }

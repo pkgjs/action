@@ -232,6 +232,17 @@ exports.main = function () {
         '::set-output name=include::[{"runs-on":"ubuntu-latest","node-version":14,"experimental":true},{"runs-on":"windows-latest","node-version":14,"experimental":true},{"runs-on":"macos-latest","node-version":14,"experimental":true},{"runs-on":"ubuntu-latest","node-version":15,"experimental":false},{"runs-on":"ubuntu-latest","node-version":13,"experimental":false},{"runs-on":"windows-latest","node-version":13,"experimental":false},{"runs-on":"macos-latest","node-version":13,"experimental":false}]',
         '::set-output name=exclude::[]'
     ]);
+
+    // excludes non-LTS experimental when explicitly requested
+    process.env = { ...originalEnv, 'INPUT_RUNS-ON': '- ubuntu-latest\n- windows-latest\n- macos-latest\n', 'INPUT_EXCLUDE': '- node-version: 17\n  runs-on: ubuntu-latest' };
+    Assert.deepStrictEqual(exports.getOutput(new Date('2021-11-01'), { engines: { node: '^10' } }), [
+        '::set-output name=node-version::[16,14,12,10]',
+        '::set-output name=lts-latest::16',
+        '::set-output name=runs-on::["ubuntu-latest","windows-latest","macos-latest"]',
+        // node 17 on ubuntu latest explicitly excluded
+        '::set-output name=include::[{"runs-on":"windows-latest","node-version":17,"experimental":true},{"runs-on":"macos-latest","node-version":17,"experimental":true}]',
+        '::set-output name=exclude::[{"node-version":17,"runs-on":"ubuntu-latest"}]'
+    ]);
 };
 
 
