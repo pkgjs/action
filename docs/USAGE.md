@@ -189,7 +189,9 @@ jobs:
 
 ### `strategy-fail-fast`
 
-Set to `true` to cancel the workflow as soon as the first matrix combo fails. Note: ⚠️ default here is different than the Github Actions default.
+Set to `true` to cancel the workflow as soon as the first matrix combo fails.
+
+Note: ⚠️ default here is different than the Github Actions default.
 
 See [Github Actions documentation for `jobs.<job_id>.strategy.fail-fast`](https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#jobsjob_idstrategyfail-fast).
 
