@@ -10,6 +10,7 @@ const ActionsCore = require('@actions/core');
 const Path = require('path');
 const Schedule = require('./schedule.json'); // https://raw.githubusercontent.com/nodejs/Release/master/schedule.json
 const Semver = require('semver');
+const Yaml = require('yaml');
 
 
 // package.json from the system being tested
@@ -23,6 +24,18 @@ internals.setOutput = function (name, value, { debug }) {
 
     debug('Output', { name, value });
     ActionsCore.setOutput(name, value);
+};
+
+
+internals.isExcluded = function (combo, exclude) {
+
+    return exclude.some((excludedCombo) => {
+
+        return Object.entries(excludedCombo).every(([k, v]) => {
+
+            return combo[k] === v;
+        });
+    });
 };
 
 
@@ -43,6 +56,37 @@ exports.main = function ({ now = new Date(), pkg = Package, debug = console.info
     }
 
     const today = now.toISOString().substr(0, 10);
+
+    const runsOnInput = Yaml.parse(ActionsCore.getInput('runs-on') || 'ubuntu-latest');
+    const runsOn = Array.isArray(runsOnInput) ? runsOnInput : runsOnInput.split(/[,\s]+/);
+
+    const includeInput = Yaml.parse(ActionsCore.getInput('include') || '[]');
+    const include = [];
+
+    includeInput.forEach((matrixCombo) => {
+
+        const experimental = matrixCombo.experimental === undefined ? false : matrixCombo.experimental;
+
+        if (matrixCombo['runs-on'] !== undefined) {
+            include.push({
+                'runs-on': matrixCombo['runs-on'],
+                'node-version': matrixCombo['node-version'],
+                experimental
+            });
+        }
+        else {
+            runsOn.forEach((os) => {
+
+                include.push({
+                    'runs-on': os,
+                    'node-version': matrixCombo['node-version'],
+                    experimental
+                });
+            });
+        }
+    });
+
+    const exclude = Yaml.parse(ActionsCore.getInput('exclude') || '[]');
 
     const versions = [];
     let ltsLatest = 4; // oldest LTS - avoid returning undefined here
@@ -77,6 +121,22 @@ exports.main = function ({ now = new Date(), pkg = Package, debug = console.info
                 debug(`${version} - skipping: not LTS.`);
                 continue;
             }
+
+            if (!isLtsStarted) {
+                debug(`${version} - experimental: not yet LTS.`);
+                include.unshift(...runsOn
+                    .map((os) => {
+
+                        return {
+                            'runs-on': os,
+                            'node-version': versionNumber,
+                            experimental: true
+                        };
+                    })
+                    .filter((combo) => !internals.isExcluded(combo, exclude))
+                );
+                continue;
+            }
         }
 
         if (upgradePolicy === 'lts/strict') {
@@ -91,12 +151,13 @@ exports.main = function ({ now = new Date(), pkg = Package, debug = console.info
     }
 
     const sorted = versions.sort((a, b) => b - a);
-    internals.setOutput('matrix', JSON.stringify(sorted), { debug });
+    internals.setOutput('node-version', JSON.stringify(sorted), { debug });
     internals.setOutput('lts-latest', ltsLatest, { debug });
 
-    const runsOnInput = ActionsCore.getInput('runs-on') || 'ubuntu-latest';
-    const runsOn = runsOnInput.split(/[,\s]+/);
     internals.setOutput('runs-on', JSON.stringify(runsOn), { debug });
+
+    internals.setOutput('include', JSON.stringify(include), { debug });
+    internals.setOutput('exclude', JSON.stringify(exclude), { debug });
 };
 
 

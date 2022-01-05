@@ -7,9 +7,22 @@ on:
         default: lts
         required: false
         type: string
+
       runs-on:
-        description: "Comma separated list of runner labels (note: not YAML!), see https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#jobsjob_idruns-on."
+        description: "Comma separated list (or a string with an array in YAML) of runner labels, see https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#jobsjob_idruns-on."
         default: "ubuntu-latest"
+        required: false
+        type: string
+
+      include:
+        description: "A string with additional matrix combinations as a YAML array of objects with the following keys: node-version, runs-on, experimental"
+        default: "[]"
+        required: false
+        type: string
+
+      exclude:
+        description: "A string with matrix combinations to be skipped as a YAML array of objects with the following keys: node-version, runs-on"
+        default: "[]"
         required: false
         type: string
 
@@ -57,9 +70,11 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      node-version: ${{ steps.set-matrix.outputs.node-version }}
       runs-on: ${{ steps.set-matrix.outputs.runs-on }}
       lts-latest: ${{ steps.set-matrix.outputs.lts-latest }}
+      include: ${{ steps.set-matrix.outputs.include }}
+      exclude: ${{ steps.set-matrix.outputs.exclude }}
 
     steps:
 
@@ -72,6 +87,8 @@ jobs:
       with:
         upgrade-policy: ${{ inputs.upgrade-policy }}
         runs-on: ${{ inputs.runs-on }}
+        include: ${{ inputs.include }}
+        exclude: ${{ inputs.exclude }}
 
   test:
     needs: prepare-node-matrix
@@ -80,10 +97,14 @@ jobs:
       fail-fast: ${{ inputs.strategy-fail-fast }}
       max-parallel: ${{ inputs.strategy-max-parallel }}
       matrix:
-        node-version: ${{ fromJson(needs.prepare-node-matrix.outputs.matrix) }}
+        node-version: ${{ fromJson(needs.prepare-node-matrix.outputs.node-version) }}
         runs-on: ${{ fromJson(needs.prepare-node-matrix.outputs.runs-on) }}
+        include: ${{ fromJson(needs.prepare-node-matrix.outputs.include) }}
+        exclude: ${{ fromJson(needs.prepare-node-matrix.outputs.exclude) }}
+        experimental: [false]
 
     runs-on: ${{ matrix.runs-on }}
+    continue-on-error: ${{ matrix.experimental }}
 
     steps:
 
