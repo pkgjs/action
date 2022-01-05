@@ -253,7 +253,11 @@ A JSON object with the secret environment variables to be set for the 'Run tests
 
 Note: make sure that your secrets are valid JSON strings (you can escape them by using [`toJSON` expression](https://docs.github.com/en/actions/learn-github-actions/expressions#tojson))
 
-⚠️ Important: ⚠️ while care has been taken to mask the secret values in log output (the input JSON as a whole and the individual values), there might exist a chance of leaking them via the publicly available UIs, as there is no official Github Actions support for passing arbitrary environment variables and secrets into re-usable workflows. The implementation of `test-secrets` is, generally, a workaround for the limitation that re-usable workflows do not receive the environment of the calling workflow.
+⚠️ Security Warning: ⚠️
+
+While care has been taken to mask the secret values in log output (the input JSON as a whole and the individual values), there might exist a chance of leaking them via the publicly available UIs. 
+There is no official Github Actions support for passing arbitrary environment variables and secrets into re-usable workflows. 
+The implementation of `test-secrets` is, generally, a workaround for the limitation that re-usable workflows do not receive the environment of the calling workflow.
 
 #### Example
 
