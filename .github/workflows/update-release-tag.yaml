@@ -54,4 +54,11 @@ jobs:
             sha: context.sha,
             owner: context.repo.owner,
             repo: context.repo.repo
-          })
+          });
+
+          await github.rest.git.createRef({
+            ref: `refs/tags/${{ steps.new-tag.outputs.minor }}`,
+            sha: context.sha,
+            owner: context.repo.owner,
+            repo: context.repo.repo
+          });
