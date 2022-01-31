@@ -103,7 +103,7 @@ jobs:
         exclude: ${{ fromJson(needs.prepare-node-matrix.outputs.exclude) }}
         experimental: [null]
 
-    runs-on: ${{ matrix.runs-on }}
+    runs-on: ${{ matrix.runs-on || 'ubuntu-latest' }}
     continue-on-error: ${{ !!matrix.experimental }}
 
     steps:

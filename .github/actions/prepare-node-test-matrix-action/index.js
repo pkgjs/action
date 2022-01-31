@@ -39,6 +39,22 @@ internals.isExcluded = function (combo, exclude) {
 };
 
 
+internals.normalizeRunsOn = function (runsOnInput) {
+
+    if (!runsOnInput || runsOnInput.toLowerCase() === 'ubuntu-latest') {
+        return [null];
+    }
+
+    const runsOnParsed = Yaml.parse(ActionsCore.getInput('runs-on'));
+
+    if (Array.isArray(runsOnParsed)) {
+        return runsOnParsed;
+    }
+
+    return runsOnParsed.split(/[,\s]+/);
+};
+
+
 exports.main = function ({ now = new Date(), pkg = Package, debug = console.info } = {}) {
 
     if (!pkg.engines || !pkg.engines.node) {
@@ -57,8 +73,7 @@ exports.main = function ({ now = new Date(), pkg = Package, debug = console.info
 
     const today = now.toISOString().substr(0, 10);
 
-    const runsOnInput = Yaml.parse(ActionsCore.getInput('runs-on') || 'ubuntu-latest');
-    const runsOn = Array.isArray(runsOnInput) ? runsOnInput : runsOnInput.split(/[,\s]+/);
+    const runsOn = internals.normalizeRunsOn(ActionsCore.getInput('runs-on'));
 
     const includeInput = Yaml.parse(ActionsCore.getInput('include') || '[]');
     const include = [];
