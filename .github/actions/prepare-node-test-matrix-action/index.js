@@ -65,7 +65,7 @@ exports.main = function ({ now = new Date(), pkg = Package, debug = console.info
 
     includeInput.forEach((matrixCombo) => {
 
-        const experimental = matrixCombo.experimental === undefined ? false : matrixCombo.experimental;
+        const experimental = matrixCombo.experimental ? 'experimental' : null;
 
         if (matrixCombo['runs-on'] !== undefined) {
             include.push({
@@ -130,7 +130,7 @@ exports.main = function ({ now = new Date(), pkg = Package, debug = console.info
                         return {
                             'node-version': versionNumber,
                             'runs-on': os,
-                            experimental: true
+                            experimental: 'experimental'
                         };
                     })
                     .filter((combo) => !internals.isExcluded(combo, exclude))

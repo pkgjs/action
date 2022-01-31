@@ -62,21 +62,21 @@ exports.main = function () {
         '::set-output name=node-version::[]',
         '::set-output name=lts-latest::12',
         '::set-output name=runs-on::["ubuntu-latest"]',
-        '::set-output name=include::[{"node-version":14,"runs-on":"ubuntu-latest","experimental":true}]',
+        '::set-output name=include::[{"node-version":14,"runs-on":"ubuntu-latest","experimental":"experimental"}]',
         '::set-output name=exclude::[]'
     ]);
     Assert.deepStrictEqual(exports.getOutput(new Date('2020-07-01'), { engines: { node: '*' } }), [
         '::set-output name=node-version::[12,10,8,6,4]',
         '::set-output name=lts-latest::12',
         '::set-output name=runs-on::["ubuntu-latest"]',
-        '::set-output name=include::[{"node-version":14,"runs-on":"ubuntu-latest","experimental":true}]',
+        '::set-output name=include::[{"node-version":14,"runs-on":"ubuntu-latest","experimental":"experimental"}]',
         '::set-output name=exclude::[]'
     ]);
     Assert.deepStrictEqual(exports.getOutput(new Date('2020-07-01'), { engines: { node: '^14 || ^12 || ^10' } }), [
         '::set-output name=node-version::[12,10]',
         '::set-output name=lts-latest::12',
         '::set-output name=runs-on::["ubuntu-latest"]',
-        '::set-output name=include::[{"node-version":14,"runs-on":"ubuntu-latest","experimental":true}]',
+        '::set-output name=include::[{"node-version":14,"runs-on":"ubuntu-latest","experimental":"experimental"}]',
         '::set-output name=exclude::[]'
     ]);
     Assert.deepStrictEqual(exports.getOutput(new Date('2010-07-01'), { engines: { node: '*' } }), [
@@ -95,35 +95,35 @@ exports.main = function () {
         '::set-output name=node-version::[12,10]',
         '::set-output name=lts-latest::12',
         '::set-output name=runs-on::["ubuntu-latest"]',
-        '::set-output name=include::[{"node-version":14,"runs-on":"ubuntu-latest","experimental":true}]',
+        '::set-output name=include::[{"node-version":14,"runs-on":"ubuntu-latest","experimental":"experimental"}]',
         '::set-output name=exclude::[]'
     ]);
     Assert.deepStrictEqual(exports.getOutput(new Date('2020-11-01'), { engines: { node: '^10' } }), [
         '::set-output name=node-version::[14,12,10]',
         '::set-output name=lts-latest::14',
         '::set-output name=runs-on::["ubuntu-latest"]',
-        '::set-output name=include::[{"node-version":15,"runs-on":"ubuntu-latest","experimental":true}]',
+        '::set-output name=include::[{"node-version":15,"runs-on":"ubuntu-latest","experimental":"experimental"}]',
         '::set-output name=exclude::[]'
     ]);
     Assert.deepStrictEqual(exports.getOutput(new Date('2021-05-01'), { engines: { node: '^10' } }), [
         '::set-output name=node-version::[14,12,10]',
         '::set-output name=lts-latest::14',
         '::set-output name=runs-on::["ubuntu-latest"]',
-        '::set-output name=include::[{"node-version":16,"runs-on":"ubuntu-latest","experimental":true},{"node-version":15,"runs-on":"ubuntu-latest","experimental":true}]',
+        '::set-output name=include::[{"node-version":16,"runs-on":"ubuntu-latest","experimental":"experimental"},{"node-version":15,"runs-on":"ubuntu-latest","experimental":"experimental"}]',
         '::set-output name=exclude::[]'
     ]);
     Assert.deepStrictEqual(exports.getOutput(new Date('2021-07-01'), { engines: { node: '^10' } }), [
         '::set-output name=node-version::[14,12,10]',
         '::set-output name=lts-latest::14',
         '::set-output name=runs-on::["ubuntu-latest"]',
-        '::set-output name=include::[{"node-version":16,"runs-on":"ubuntu-latest","experimental":true}]',
+        '::set-output name=include::[{"node-version":16,"runs-on":"ubuntu-latest","experimental":"experimental"}]',
         '::set-output name=exclude::[]'
     ]);
     Assert.deepStrictEqual(exports.getOutput(new Date('2021-11-01'), { engines: { node: '^10' } }), [
         '::set-output name=node-version::[16,14,12,10]',
         '::set-output name=lts-latest::16',
         '::set-output name=runs-on::["ubuntu-latest"]',
-        '::set-output name=include::[{"node-version":17,"runs-on":"ubuntu-latest","experimental":true}]',
+        '::set-output name=include::[{"node-version":17,"runs-on":"ubuntu-latest","experimental":"experimental"}]',
         '::set-output name=exclude::[]'
     ]);
 
@@ -209,7 +209,7 @@ exports.main = function () {
         '::set-output name=node-version::[]',
         '::set-output name=lts-latest::12',
         '::set-output name=runs-on::["ubuntu-latest","windows-latest","macos-latest"]',
-        '::set-output name=include::[{"node-version":14,"runs-on":"ubuntu-latest","experimental":true},{"node-version":14,"runs-on":"windows-latest","experimental":true},{"node-version":14,"runs-on":"macos-latest","experimental":true}]',
+        '::set-output name=include::[{"node-version":14,"runs-on":"ubuntu-latest","experimental":"experimental"},{"node-version":14,"runs-on":"windows-latest","experimental":"experimental"},{"node-version":14,"runs-on":"macos-latest","experimental":"experimental"}]',
         '::set-output name=exclude::[]'
     ]);
 
@@ -219,7 +219,7 @@ exports.main = function () {
         '::set-output name=node-version::[]',
         '::set-output name=lts-latest::12',
         '::set-output name=runs-on::["ubuntu-latest","windows-latest","macos-latest"]',
-        '::set-output name=include::[{"node-version":14,"runs-on":"ubuntu-latest","experimental":true},{"node-version":14,"runs-on":"windows-latest","experimental":true},{"node-version":14,"runs-on":"macos-latest","experimental":true}]',
+        '::set-output name=include::[{"node-version":14,"runs-on":"ubuntu-latest","experimental":"experimental"},{"node-version":14,"runs-on":"windows-latest","experimental":"experimental"},{"node-version":14,"runs-on":"macos-latest","experimental":"experimental"}]',
         '::set-output name=exclude::[]'
     ]);
 
@@ -229,7 +229,7 @@ exports.main = function () {
         '::set-output name=node-version::[]',
         '::set-output name=lts-latest::12',
         '::set-output name=runs-on::["ubuntu-latest","windows-latest","macos-latest"]',
-        '::set-output name=include::[{"node-version":14,"runs-on":"ubuntu-latest","experimental":true},{"node-version":14,"runs-on":"windows-latest","experimental":true},{"node-version":14,"runs-on":"macos-latest","experimental":true},{"node-version":15,"runs-on":"ubuntu-latest","experimental":false},{"node-version":13,"runs-on":"ubuntu-latest","experimental":false},{"node-version":13,"runs-on":"windows-latest","experimental":false},{"node-version":13,"runs-on":"macos-latest","experimental":false}]',
+        '::set-output name=include::[{"node-version":14,"runs-on":"ubuntu-latest","experimental":"experimental"},{"node-version":14,"runs-on":"windows-latest","experimental":"experimental"},{"node-version":14,"runs-on":"macos-latest","experimental":"experimental"},{"node-version":15,"runs-on":"ubuntu-latest","experimental":null},{"node-version":13,"runs-on":"ubuntu-latest","experimental":null},{"node-version":13,"runs-on":"windows-latest","experimental":null},{"node-version":13,"runs-on":"macos-latest","experimental":null}]',
         '::set-output name=exclude::[]'
     ]);
 
@@ -240,7 +240,7 @@ exports.main = function () {
         '::set-output name=lts-latest::16',
         '::set-output name=runs-on::["ubuntu-latest","windows-latest","macos-latest"]',
         // node 17 on ubuntu latest explicitly excluded
-        '::set-output name=include::[{"node-version":17,"runs-on":"windows-latest","experimental":true},{"node-version":17,"runs-on":"macos-latest","experimental":true}]',
+        '::set-output name=include::[{"node-version":17,"runs-on":"windows-latest","experimental":"experimental"},{"node-version":17,"runs-on":"macos-latest","experimental":"experimental"}]',
         '::set-output name=exclude::[{"node-version":17,"runs-on":"ubuntu-latest"}]'
     ]);
 };
