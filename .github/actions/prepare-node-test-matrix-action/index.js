@@ -69,8 +69,8 @@ exports.main = function ({ now = new Date(), pkg = Package, debug = console.info
 
         if (matrixCombo['runs-on'] !== undefined) {
             include.push({
-                'runs-on': matrixCombo['runs-on'],
                 'node-version': matrixCombo['node-version'],
+                'runs-on': matrixCombo['runs-on'],
                 experimental
             });
         }
@@ -78,8 +78,8 @@ exports.main = function ({ now = new Date(), pkg = Package, debug = console.info
             runsOn.forEach((os) => {
 
                 include.push({
-                    'runs-on': os,
                     'node-version': matrixCombo['node-version'],
+                    'runs-on': os,
                     experimental
                 });
             });
@@ -128,8 +128,8 @@ exports.main = function ({ now = new Date(), pkg = Package, debug = console.info
                     .map((os) => {
 
                         return {
-                            'runs-on': os,
                             'node-version': versionNumber,
+                            'runs-on': os,
                             experimental: true
                         };
                     })
