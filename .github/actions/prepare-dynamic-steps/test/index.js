@@ -43,7 +43,7 @@ exports.main = function () {
         Assert.throws(() => PrepareDynamicStepsAction.main(), { message: 'Invalid `steps` - not an array.' });
     }
     finally {
-        Fs.rmdirSync(Path.join(__dirname, '.tmp'), { recursive: true });
+        Fs.rmSync(Path.join(__dirname, '.tmp'), { recursive: true });
     }
 };
 
