@@ -1,0 +1,64 @@
+# Automatically moves the major tag vX when vX.Y.Z is created
+
+name: Update release tag
+
+on:
+  push:
+    tags:
+    - v*
+
+jobs:
+  update-release-tag:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get repo HEAD ref
+      id: new-tag
+      uses: actions/github-script@v5
+      with:
+        script: |
+          
+          const parsed = context.ref.match(/^refs\/tags\/(?<minor>(?<major>v\d+)\.\d+)\.\d+$/) 
+          if (!parsed) {
+            console.log(`Ignoring tag ${context.ref} - not a semver release tag.`);
+            return;
+          }
+          
+          const response = await github.rest.git.getRef({ 
+            ref: `heads/${context.payload.repository.default_branch}`, 
+            owner: context.repo.owner, 
+            repo: context.repo.repo 
+          });
+          
+          const repoHeadSha = response.data.object.sha;
+          
+          if (repoHeadSha !== context.sha) {
+            console.log(`Ignoring tag at ${context.sha}, because repo HEAD is at ${repoHeadSha}.`);
+            return;
+          }
+          
+          console.log(`Parsed major: ${parsed.groups.major}`);
+          core.setOutput('major', parsed.groups.major);
+
+          console.log(`Parsed minor: ${parsed.groups.minor}`);
+          core.setOutput('minor', parsed.groups.minor);
+
+
+    - name: Move major tag ${{ steps.new-tag.outputs.major }}
+      if: ${{ steps.new-tag.outputs.major }}
+      uses: actions/github-script@v5
+      with:
+        script: |
+
+          await github.rest.git.createRef({
+            ref: `refs/tags/${{ steps.new-tag.outputs.major }}`,
+            sha: context.sha,
+            owner: context.repo.owner,
+            repo: context.repo.repo
+          });
+
+          await github.rest.git.createRef({
+            ref: `refs/tags/${{ steps.new-tag.outputs.minor }}`,
+            sha: context.sha,
+            owner: context.repo.owner,
+            repo: context.repo.repo
+          });
