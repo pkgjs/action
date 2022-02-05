@@ -39,6 +39,22 @@ internals.isExcluded = function (combo, exclude) {
 };
 
 
+internals.normalizeRunsOn = function (runsOnInput) {
+
+    if (!runsOnInput || runsOnInput.toLowerCase() === 'ubuntu-latest') {
+        return [null];
+    }
+
+    const runsOnParsed = Yaml.parse(ActionsCore.getInput('runs-on'));
+
+    if (Array.isArray(runsOnParsed)) {
+        return runsOnParsed;
+    }
+
+    return runsOnParsed.split(/[,\s]+/);
+};
+
+
 exports.main = function ({ now = new Date(), pkg = Package, debug = console.info } = {}) {
 
     if (!pkg.engines || !pkg.engines.node) {
@@ -57,20 +73,19 @@ exports.main = function ({ now = new Date(), pkg = Package, debug = console.info
 
     const today = now.toISOString().substr(0, 10);
 
-    const runsOnInput = Yaml.parse(ActionsCore.getInput('runs-on') || 'ubuntu-latest');
-    const runsOn = Array.isArray(runsOnInput) ? runsOnInput : runsOnInput.split(/[,\s]+/);
+    const runsOn = internals.normalizeRunsOn(ActionsCore.getInput('runs-on'));
 
     const includeInput = Yaml.parse(ActionsCore.getInput('include') || '[]');
     const include = [];
 
     includeInput.forEach((matrixCombo) => {
 
-        const experimental = matrixCombo.experimental === undefined ? false : matrixCombo.experimental;
+        const experimental = matrixCombo.experimental ? 'experimental' : null;
 
         if (matrixCombo['runs-on'] !== undefined) {
             include.push({
-                'runs-on': matrixCombo['runs-on'],
                 'node-version': matrixCombo['node-version'],
+                'runs-on': matrixCombo['runs-on'],
                 experimental
             });
         }
@@ -78,8 +93,8 @@ exports.main = function ({ now = new Date(), pkg = Package, debug = console.info
             runsOn.forEach((os) => {
 
                 include.push({
-                    'runs-on': os,
                     'node-version': matrixCombo['node-version'],
+                    'runs-on': os,
                     experimental
                 });
             });
@@ -128,9 +143,9 @@ exports.main = function ({ now = new Date(), pkg = Package, debug = console.info
                     .map((os) => {
 
                         return {
-                            'runs-on': os,
                             'node-version': versionNumber,
-                            experimental: true
+                            'runs-on': os,
+                            experimental: 'experimental'
                         };
                     })
                     .filter((combo) => !internals.isExcluded(combo, exclude))
