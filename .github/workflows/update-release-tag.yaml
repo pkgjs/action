@@ -49,12 +49,36 @@ jobs:
       with:
         script: |
 
+          try {
+            await github.rest.git.deleteRef({
+              ref: `refs/tags/${{ steps.new-tag.outputs.major }}`,
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+            console.log(`Deleted tags/${{ steps.new-tag.outputs.major }}.`);
+          }
+          catch (e) {
+            console.log(`Failed to delete tags/${{ steps.new-tag.outputs.major }} - assuming it never existed.`, e);
+          }
+
           await github.rest.git.createRef({
             ref: `refs/tags/${{ steps.new-tag.outputs.major }}`,
             sha: context.sha,
             owner: context.repo.owner,
             repo: context.repo.repo
           });
+          console.log(`Created tags/${{ steps.new-tag.outputs.major }} at ${context.sha}.`);
+
+          try {
+            await github.rest.git.deleteRef({
+              ref: `refs/tags/${{ steps.new-tag.outputs.minor }}`,
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+          }
+          catch (e) {
+            console.log(`Failed to delete tags/${{ steps.new-tag.outputs.minor }} - assuming it never existed.`, e);
+          }
 
           await github.rest.git.createRef({
             ref: `refs/tags/${{ steps.new-tag.outputs.minor }}`,
@@ -62,3 +86,4 @@ jobs:
             owner: context.repo.owner,
             repo: context.repo.repo
           });
+          console.log(`Created tags/${{ steps.new-tag.outputs.minor }} at ${context.sha}.`);
