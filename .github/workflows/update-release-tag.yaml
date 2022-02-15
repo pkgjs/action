@@ -13,7 +13,7 @@ jobs:
     steps:
     - name: Get repo HEAD ref
       id: new-tag
-      uses: actions/github-script@v5
+      uses: actions/github-script@v6
       with:
         script: |
           
@@ -45,7 +45,7 @@ jobs:
 
     - name: Move major tag ${{ steps.new-tag.outputs.major }}
       if: ${{ steps.new-tag.outputs.major }}
-      uses: actions/github-script@v5
+      uses: actions/github-script@v6
       with:
         script: |
 
