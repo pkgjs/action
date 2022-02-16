@@ -34,7 +34,7 @@ See also:
 ```yaml
 jobs:
   test:
-    uses: pkgjs/action/.github/workflows/node-test.yaml@main
+    uses: pkgjs/action/.github/workflows/node-test.yaml@v0
     with:
       runs-on: ubuntu-latest, macos-latest
       exclude: |
@@ -71,7 +71,7 @@ See also:
 ```yaml
 jobs:
   test:
-    uses: pkgjs/action/.github/workflows/node-test.yaml@main
+    uses: pkgjs/action/.github/workflows/node-test.yaml@v0
     with:
       runs-on: ubuntu-latest, macos-latest
       include: |
@@ -104,7 +104,7 @@ Note: this creates a temporary local [composite action](https://docs.github.com/
 ```yaml
 jobs:
   test:
-    uses: pkgjs/action/.github/workflows/node-test.yaml@main
+    uses: pkgjs/action/.github/workflows/node-test.yaml@v0
     with:
       post-checkout-steps: |
         - name: Download some library
@@ -124,7 +124,7 @@ Note: this creates a temporary local [composite action](https://docs.github.com/
 ```yaml
 jobs:
   test:
-    uses: pkgjs/action/.github/workflows/node-test.yaml@main
+    uses: pkgjs/action/.github/workflows/node-test.yaml@v0
     with:
       post-install-steps: |
         - name: Check dependencies for vulnerabilities
@@ -144,7 +144,7 @@ Note: this creates a temporary local [composite action](https://docs.github.com/
 ```yaml
 jobs:
   test:
-    uses: pkgjs/action/.github/workflows/node-test.yaml@main
+    uses: pkgjs/action/.github/workflows/node-test.yaml@v0
     with:
       post-test-steps: |
         - name: Coverage Report
@@ -163,7 +163,7 @@ See [Github actions documentation for `jobs.<job_id>.runs-on`](https://docs.gith
 ```yaml
 jobs:
   test:
-    uses: pkgjs/action/.github/workflows/node-test.yaml@main
+    uses: pkgjs/action/.github/workflows/node-test.yaml@v0
     with:
       runs-on: ubuntu-latest, macos-latest
 ```
@@ -171,7 +171,7 @@ jobs:
 ```yaml
 jobs:
   test:
-    uses: pkgjs/action/.github/workflows/node-test.yaml@main
+    uses: pkgjs/action/.github/workflows/node-test.yaml@v0
     with:
       runs-on: '["ubuntu-latest", "macos-latest"]'
 ```
@@ -179,7 +179,7 @@ jobs:
 ```yaml
 jobs:
   test:
-    uses: pkgjs/action/.github/workflows/node-test.yaml@main
+    uses: pkgjs/action/.github/workflows/node-test.yaml@v0
     with:
       runs-on: |
         - ubuntu-latest
@@ -211,7 +211,7 @@ Command to run instead of `npm test`.
 ```yaml
 jobs:
   test:
-    uses: pkgjs/action/.github/workflows/node-test.yaml@main
+    uses: pkgjs/action/.github/workflows/node-test.yaml@v0
     with:
       test-command: npm run coverage
 ```
@@ -264,7 +264,7 @@ The implementation of `test-secrets` is, generally, a workaround for the limitat
 ```yaml
 jobs:
   test:
-    uses: pkgjs/action/.github/workflows/node-test.yaml@main
+    uses: pkgjs/action/.github/workflows/node-test.yaml@v0
     secrets:
       test-secrets: |-
         {
