@@ -133,7 +133,7 @@ jobs:
         path: post-test-steps
 
     - name: Setup Node.js@${{ matrix.node-version }}
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
 
