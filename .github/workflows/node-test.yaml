@@ -199,7 +199,7 @@ jobs:
 
     - name: Run tests
       run: ${{ inputs.test-command }}
-      env: ${{ fromJson(steps.set-env-vars-for-tests.outputs.env-vars) }}
+      env: ${{ fromJson(steps.set-env-vars-for-tests.outputs.env-vars || '{}') }}
 
     - name: Run post-test steps
       if: ${{ inputs.post-test-steps }}
