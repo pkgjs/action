@@ -25,7 +25,7 @@ on:
 
 jobs:
   test:
-    uses: pkgjs/action/.github/workflows/node-test.yaml@main
+    uses: pkgjs/action/.github/workflows/node-test.yaml@v0
     with:
       upgrade-policy: lts           # optional
 ```

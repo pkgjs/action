@@ -6,4 +6,4 @@ on:
 
 jobs:
   test:
-    uses: pkgjs/action/.github/workflows/node-test.yaml@main
+    uses: ./.github/workflows/node-test.yaml

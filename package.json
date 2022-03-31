@@ -5,7 +5,8 @@
   "description": "Github Actions tooling for testing Node.js packages",
   "scripts": {
     "lint": "[ \"$NODE_LTS_LATEST\" != \"\" ] && [ \"$MATRIX_NODE_VERSION\" != \"$NODE_LTS_LATEST\" ] && echo 'Skipping linting' || npx -- eslint .github",
-    "test": "for PRIVATE_ACTION in .github/actions/*/; do cd ${INIT_CWD}/${PRIVATE_ACTION} && npm test || exit 1; done && cd ${INIT_CWD} && npm run lint"
+    "test": "for PRIVATE_ACTION in .github/actions/*/; do cd ${INIT_CWD}/${PRIVATE_ACTION} && npm test || exit 1; done && cd ${INIT_CWD} && npm run lint",
+    "version": "sed -i.bak \"s/\\(uses: pkgjs\\/action.*\\)\\(@.*\\)$/\\1@v$npm_package_version/g\" .github/workflows/node-test.yaml; rm .github/workflows/node-test.yaml.bak; git diff; git add .github/workflows/node-test.yaml"
   },
   "repository": {
     "type": "git",
