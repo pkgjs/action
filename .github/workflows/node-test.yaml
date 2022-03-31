@@ -79,7 +79,7 @@ jobs:
     steps:
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Prepare the matrix
       uses: pkgjs/action/.github/actions/prepare-node-test-matrix-action@v0.1.1
@@ -109,7 +109,7 @@ jobs:
     steps:
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Prepare post-checkout steps
       if: ${{ inputs.post-checkout-steps }}
