@@ -18,6 +18,6 @@
   },
   "dependencies": {
     "@actions/core": "^1.6.0",
-    "yaml": "^1.10.2"
+    "yaml": "^2.0.0"
   }
 }
