@@ -53,6 +53,12 @@ on:
         required: false
         type: number
 
+      timeout-minutes:
+        description: "The maximum number of minutes to let a job run before GitHub automatically cancels it."
+        default: 30
+        required: false
+        type: number
+
       test-command:
         description: "Command to run instead of `npm test` (e.g. for coverage)."
         default: npm test
@@ -92,6 +98,8 @@ jobs:
 
   test:
     needs: prepare-node-matrix
+
+    timeout-minutes: ${{ inputs.timeout-minutes }}
 
     strategy:
       fail-fast: ${{ inputs.strategy-fail-fast }}

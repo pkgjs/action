@@ -10,6 +10,7 @@
   - [`runs-on`](#runs-on)
   - [`strategy-fail-fast`](#strategy-fail-fast)
   - [`strategy-max-parallel`](#strategy-max-parallel)
+  - [`timeout-minutes`](#timeout-minutes)
   - [`test-command`](#test-command)
   - [`upgrade-policy`](#upgrade-policy)
 - `secrets`
@@ -200,6 +201,13 @@ See [Github Actions documentation for `jobs.<job_id>.strategy.fail-fast`](https:
 The maximum number of matrix jobs that can run simultaneously. Default is unlimited.
 
 See [Github Actions documentation for `jobs.<job_id>.strategy.max-parallel`](https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#jobsjob_idstrategymax-parallel).
+
+
+### `timeout-minutes`
+
+The maximum number of minutes to let a job run before GitHub automatically cancels it. Default: 30
+
+See [Github Actions documentation for `jobs.<job_id>.timeout-minutes`](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idtimeout-minutes).
 
 
 ### `test-command`
