@@ -205,7 +205,7 @@ See [Github Actions documentation for `jobs.<job_id>.strategy.max-parallel`](htt
 
 ### `timeout-minutes`
 
-The maximum number of minutes to let a job run before GitHub automatically cancels it. Default: 360
+The maximum number of minutes to let a job run before GitHub automatically cancels it. Default: 30
 
 See [Github Actions documentation for `jobs.<job_id>.timeout-minutes`](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idtimeout-minutes).
 

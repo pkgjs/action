@@ -55,7 +55,7 @@ on:
 
       timeout-minutes:
         description: "The maximum number of minutes to let a job run before GitHub automatically cancels it."
-        default: 360
+        default: 30
         required: false
         type: number
 
