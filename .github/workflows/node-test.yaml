@@ -164,9 +164,9 @@ jobs:
       run: |
         if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ] || [ -f yarn.lock ]
         then
-          echo "::set-output name=install-command::npm ci"
+          echo "install-command=npm ci" >> $GITHUB_OUTPUT
         else
-          echo "::set-output name=install-command::npm install"
+          echo "install-command=npm install" >> $GITHUB_OUTPUT
         fi
 
     - name: Install dependencies
@@ -201,7 +201,7 @@ jobs:
         )
 
         # output the merged variables
-        echo "::set-output name=env-vars::${MERGED_VARS}"
+        echo "env-vars=${MERGED_VARS}" >> $GITHUB_OUTPUT
       env:
         INPUT_VARS: ${{ secrets.test-secrets || '{}' }}
 
