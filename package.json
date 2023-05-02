@@ -1,7 +1,7 @@
 {
   "name": "@pkgjs/action",
   "private": true,
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Github Actions tooling for testing Node.js packages",
   "scripts": {
     "lint": "[ \"$NODE_LTS_LATEST\" != \"\" ] && [ \"$MATRIX_NODE_VERSION\" != \"$NODE_LTS_LATEST\" ] && echo 'Skipping linting' || npx -- eslint .github",
