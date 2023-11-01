@@ -1,14 +1,8 @@
 'use strict';
 
-process.on('unhandledRejection', (err) => {
-
-    throw err;
-});
-
-
 const ActionsCore = require('@actions/core');
-const Fs = require('fs');
-const Path = require('path');
+const Fs = require('node:fs');
+const Path = require('node:path');
 const Yaml = require('yaml');
 
 
