@@ -41,6 +41,8 @@ exports.getOutput = function (now, pkg) {
 
 exports.main = function () {
 
+    delete process.env.GITHUB_OUTPUT;
+
     const originalEnv = { ...process.env };
 
     // does not fail with defaults, cannot assert, as output is dependent on date
