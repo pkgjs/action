@@ -3,7 +3,7 @@ name: Dynamic action generator
 description: Takes a list of steps as YAML inside string and writes them out as a composite action
 
 runs:
-  using: node16
+  using: node20
   main: index.js
 
 inputs:

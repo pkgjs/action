@@ -15,7 +15,7 @@
   "author": "@pkgjs",
   "license": "MIT",
   "engines": {
-    "node": "^16"
+    "node": "^20"
   },
   "devDependencies": {
     "@hapi/eslint-plugin": "^6.0.0",
