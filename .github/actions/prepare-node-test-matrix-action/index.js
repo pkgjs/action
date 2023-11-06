@@ -51,7 +51,7 @@ internals.normalizeRunsOn = function (runsOnInput) {
 
 exports.main = function ({ now = new Date(), pkg = Package, debug = console.info } = {}) {
 
-    if (!pkg?.engines?.node) {
+    if (!pkg.engines?.node) {
         throw new Error('`engines.node` range not defined in `package.json`.');
     }
 
