@@ -1,13 +1,7 @@
 'use strict';
 
-process.on('unhandledRejection', (err) => {
-
-    throw err;
-});
-
-
 const ActionsCore = require('@actions/core');
-const Path = require('path');
+const Path = require('node:path');
 const Schedule = require('./schedule.json'); // https://raw.githubusercontent.com/nodejs/Release/master/schedule.json
 const Semver = require('semver');
 const Yaml = require('yaml');
@@ -57,7 +51,7 @@ internals.normalizeRunsOn = function (runsOnInput) {
 
 exports.main = function ({ now = new Date(), pkg = Package, debug = console.info } = {}) {
 
-    if (!pkg.engines || !pkg.engines.node) {
+    if (!pkg.engines?.node) {
         throw new Error('`engines.node` range not defined in `package.json`.');
     }
 
