@@ -15,7 +15,7 @@ exports.main = function () {
     try {
         var steps = Yaml.parse(ActionsCore.getInput('steps'));
     }
-    catch (err) {
+    catch (err) { // eslint-disable-line no-unused-vars
         throw new Error('Invalid `steps` - unable to parse YAML.');
     }
 
