@@ -65,6 +65,18 @@ on:
         required: false
         type: string
 
+      action-repository:
+        description: "Repository to load the actions from"
+        default: ${{ github.repository || 'pkgs/action' }}
+        required: false
+        type: string
+
+      action-ref:
+        description: "Git ref to load the actions from"
+        default: ${{ github.ref || 'v0.1.10' }}
+        required: false
+        type: string
+
     secrets:
       test-secrets:
         description: "A JSON object with the secret environment variables to be set for the 'Run tests' step. Values will be masked in output."
@@ -86,9 +98,19 @@ jobs:
 
     - name: Checkout
       uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+
+    - name: Checkout action code
+      uses: actions/checkout@v4
+      with:
+        repository: ${{ inputs.action-repository }}
+        ref: ${{ inputs.action-ref }}
+        path: infra-actions
+        persist-credentials: false
 
     - name: Prepare the matrix
-      uses: pkgjs/action/.github/actions/prepare-node-test-matrix-action@v0.1.10
+      uses: ./infra-actions/.github/actions/prepare-node-test-matrix-action
       id: set-matrix
       with:
         upgrade-policy: ${{ inputs.upgrade-policy }}
@@ -118,24 +140,34 @@ jobs:
 
     - name: Checkout
       uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+
+    - name: Checkout action code
+      uses: actions/checkout@v4
+      with:
+        repository: ${{ inputs.action-repository }}
+        ref: ${{ inputs.action-ref }}
+        path: infra-actions
+        persist-credentials: false
 
     - name: Prepare post-checkout steps
       if: ${{ inputs.post-checkout-steps }}
-      uses: pkgjs/action/.github/actions/prepare-dynamic-steps@v0.1.10
+      uses: ./infra-actions/.github/actions/prepare-dynamic-steps
       with:
         steps: ${{ inputs.post-checkout-steps }}
         path: post-checkout-steps
 
     - name: Prepare post-install steps
       if: ${{ inputs.post-install-steps }}
-      uses: pkgjs/action/.github/actions/prepare-dynamic-steps@v0.1.10
+      uses: ./infra-actions/.github/actions/prepare-dynamic-steps
       with:
         steps: ${{ inputs.post-install-steps }}
         path: post-install-steps
 
     - name: Prepare post-test steps
       if: ${{ inputs.post-test-steps }}
-      uses: pkgjs/action/.github/actions/prepare-dynamic-steps@v0.1.10
+      uses: ./infra-actions/.github/actions/prepare-dynamic-steps
       with:
         steps: ${{ inputs.post-test-steps }}
         path: post-test-steps
