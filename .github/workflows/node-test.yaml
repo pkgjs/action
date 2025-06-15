@@ -67,13 +67,13 @@ on:
 
       action-repository:
         description: "Repository to load the actions from"
-        default: pkgs/actions
+        default: ${{ github.repository || 'pkgs/action' }}
         required: false
         type: string
 
       action-ref:
         description: "Git ref to load the actions from"
-        default: v0.1.10
+        default: ${{ github.ref || 'v0.1.10' }}
         required: false
         type: string
 
@@ -98,6 +98,8 @@ jobs:
 
     - name: Checkout
       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+      with:
+        persist-credentials: false
 
     - name: Checkout action code
       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
@@ -105,6 +107,7 @@ jobs:
         repository: ${{ inputs.action-repository }}
         ref: ${{ inputs.action-ref }}
         path: infra-actions
+        persist-credentials: false
 
     - name: Prepare the matrix
       uses: ./infra-actions/.github/actions/prepare-node-test-matrix-action
@@ -137,6 +140,8 @@ jobs:
 
     - name: Checkout
       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+      with:
+        persist-credentials: false
 
     - name: Checkout action code
       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
@@ -144,6 +149,7 @@ jobs:
         repository: ${{ inputs.action-repository }}
         ref: ${{ inputs.action-ref }}
         path: infra-actions
+        persist-credentials: false
 
     - name: Prepare post-checkout steps
       if: ${{ inputs.post-checkout-steps }}
