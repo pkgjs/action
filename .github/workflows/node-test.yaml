@@ -85,10 +85,10 @@ jobs:
     steps:
 
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
 
     - name: Prepare the matrix
-      uses: pkgjs/action/.github/actions/prepare-node-test-matrix-action@v0.1.10
+      uses: ${{ github.action_repository }}/.github/actions/prepare-node-test-matrix-action@${{ github.action_ref }}
       id: set-matrix
       with:
         upgrade-policy: ${{ inputs.upgrade-policy }}
@@ -117,31 +117,31 @@ jobs:
     steps:
 
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
 
     - name: Prepare post-checkout steps
       if: ${{ inputs.post-checkout-steps }}
-      uses: pkgjs/action/.github/actions/prepare-dynamic-steps@v0.1.10
+      uses: ${{ github.action_repository }}/.github/actions/prepare-dynamic-steps@${{ github.action_ref }}
       with:
         steps: ${{ inputs.post-checkout-steps }}
         path: post-checkout-steps
 
     - name: Prepare post-install steps
       if: ${{ inputs.post-install-steps }}
-      uses: pkgjs/action/.github/actions/prepare-dynamic-steps@v0.1.10
+      uses: ${{ github.action_repository }}/.github/actions/prepare-dynamic-steps@${{ github.action_ref }}
       with:
         steps: ${{ inputs.post-install-steps }}
         path: post-install-steps
 
     - name: Prepare post-test steps
       if: ${{ inputs.post-test-steps }}
-      uses: pkgjs/action/.github/actions/prepare-dynamic-steps@v0.1.10
+      uses: ${{ github.action_repository }}/.github/actions/prepare-dynamic-steps@${{ github.action_ref }}
       with:
         steps: ${{ inputs.post-test-steps }}
         path: post-test-steps
 
     - name: Setup Node.js@${{ matrix.node-version }}
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  # v4.4.0
       with:
         node-version: ${{ matrix.node-version }}
 
