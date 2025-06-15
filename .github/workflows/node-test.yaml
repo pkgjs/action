@@ -65,6 +65,18 @@ on:
         required: false
         type: string
 
+      action-repository:
+        description: "Repository to load the actions from"
+        default: pkgs/actions
+        required: false
+        type: string
+
+      action-ref:
+        description: "Git ref to load the actions from"
+        default: v0.1.10
+        required: false
+        type: string
+
     secrets:
       test-secrets:
         description: "A JSON object with the secret environment variables to be set for the 'Run tests' step. Values will be masked in output."
@@ -89,12 +101,9 @@ jobs:
 
     - name: Checkout action code
       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
-      env:
-        REPO: ${{ github.action_repository }}
-        REF: ${{ github.action_ref }}
       with:
-        repository: ${{ env.REPO }}
-        ref: ${{ env.REF }}
+        repository: ${{ inputs.action-repository }}
+        ref: ${{ inputs.action-ref }}
         path: infra-actions
 
     - name: Prepare the matrix
@@ -131,12 +140,9 @@ jobs:
 
     - name: Checkout action code
       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
-      env:
-        REPO: ${{ github.action_repository }}
-        REF: ${{ github.action_ref }}
       with:
-        repository: ${{ env.REPO }}
-        ref: ${{ env.REF }}
+        repository: ${{ inputs.action-repository }}
+        ref: ${{ inputs.action-ref }}
         path: infra-actions
 
     - name: Prepare post-checkout steps
