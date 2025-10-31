@@ -3,7 +3,7 @@ name: Node.js test matrix generator action
 description: Returns an array of Node.js major versions based on an upgrade policy and package.json
 
 runs:
-  using: node20
+  using: node24
   main: index.js
 
 inputs:
