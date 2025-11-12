@@ -13,8 +13,8 @@
   "author": "@pkgjs",
   "license": "MIT",
   "engines": {
-    "node": "^20",
-    "npm": "^10 || ^11"
+    "node": "^24",
+    "npm": "^11"
   },
   "dependencies": {
     "@actions/core": "^1.6.0",
