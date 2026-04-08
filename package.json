@@ -20,6 +20,6 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.26.5",
     "@hapi/eslint-plugin": "^7.0.0",
-    "eslint": "^9.0.0"
+    "eslint": "^10.0.0"
   }
 }
