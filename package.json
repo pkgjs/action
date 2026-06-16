@@ -18,7 +18,7 @@
     "node": "^20"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.26.5",
+    "@babel/eslint-parser": "^8.0.0",
     "@hapi/eslint-plugin": "^7.0.0",
     "eslint": "^9.0.0"
   }
